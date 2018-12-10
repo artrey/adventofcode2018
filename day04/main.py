@@ -90,12 +90,17 @@ def max_asleep_guard(guards: typing.List[Guard]) -> Guard:
     return max(guards, key=lambda x: x.total_asleep_time)
 
 
-def frequent_min(guard: Guard) -> int:
+def total_asleep_mins(guard: Guard) -> typing.Dict[int, int]:
     sleep_times = {}
     for sleeps in guard.asleep_schedule.values():
         for sleep_time in sleeps:
             for minute in range(sleep_time.start, sleep_time.end):
                 sleep_times[minute] = sleep_times.get(minute, 0) + 1
+    return sleep_times
+
+
+def frequent_min(guard: Guard) -> int:
+    sleep_times = total_asleep_mins(guard)
     return max(sleep_times.items(), key=lambda x: x[1])[0]
 
 
@@ -104,6 +109,17 @@ def checksum(guards: typing.List[Guard]) -> int:
     return guard.id * frequent_min(guard)
 
 
+def checksum2(guards: typing.List[Guard]) -> int:
+    ret = []
+    for guard in guards:
+        sleep_times = total_asleep_mins(guard)
+        if sleep_times:
+            ret.append((guard.id, *max(sleep_times.items(), key=lambda x: x[1])))
+    max_struct = max(ret, key=lambda x: x[2])
+    return max_struct[0] * max_struct[1]
+
+
 if __name__ == '__main__':
     data = extract_data()
     print(checksum(data))
+    print(checksum2(data))
