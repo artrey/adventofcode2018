@@ -1,6 +1,6 @@
 import re
 import typing
-from day09.rounded_linked_list import DListNode, RoundedLinkedList
+from utils.linked_list.rounded_linked_list import DListNode, RoundedLinkedList
 
 
 class Player:
@@ -33,12 +33,12 @@ class Circle:
     def add_marble(self, number: int) -> int:
         if number % 23 == 0:
             node = self.find_node(-7)
-            self.circle.set_head(node.next)
+            self.circle.head = node.next
             target_node = self.circle.remove_node(node)
             return number + target_node.data
         else:
             node = self.find_node(1)
-            self.circle.set_head(self.circle.insert(number, node))
+            self.circle.head = self.circle.insert(number, node)
             return 0
 
     def __str__(self) -> str:
