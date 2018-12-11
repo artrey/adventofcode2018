@@ -88,7 +88,5 @@ class RoundedLinkedList(BaseLinkedList):
         else:
             node.prev.next = node.next
             node.next.prev = node.prev
-
-        node.prev = None
-        node.next = None
+            self._count -= 1
         return node

@@ -54,3 +54,9 @@ class BaseLinkedList(collections.abc.Iterable, ABC):
         if elem is not None:
             return self.remove_node(elem)
         return None
+
+    def copy(self) -> 'BaseLinkedList':
+        ret = self.__class__()
+        for value in self:
+            ret.append(value)
+        return ret

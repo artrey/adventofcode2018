@@ -111,13 +111,15 @@ class LinkedList(BaseLinkedList):
         """
         if self._count == 1:
             self.clear()
-        elif self._tail == node:
-            self._tail = node.prev
-            self._tail.next = None
         else:
-            node.prev.next = node.next
-            node.next.prev = node.prev
-
-        node.prev = None
-        node.next = None
+            if self._head == node:
+                self._head = node.next
+                self._tail.prev = None
+            elif self._tail == node:
+                self._tail = node.prev
+                self._tail.next = None
+            else:
+                node.prev.next = node.next
+                node.next.prev = node.prev
+            self._count -= 1
         return node
