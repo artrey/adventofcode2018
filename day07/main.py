@@ -36,6 +36,11 @@ def workflow(data: typing.List[typing.Tuple[str, str]]) -> str:
     return ''.join(ret)
 
 
+def multiple_workflow_time(data: typing.List[typing.Tuple[str, str]]) -> int:
+    return 0
+
+
 if __name__ == '__main__':
     data = extract_data()
     print(workflow(data))
+    print(multiple_workflow_time(data))
