@@ -114,7 +114,7 @@ class LinkedList(BaseLinkedList):
         else:
             if self._head == node:
                 self._head = node.next
-                self._tail.prev = None
+                self._head.prev = None
             elif self._tail == node:
                 self._tail = node.prev
                 self._tail.next = None
