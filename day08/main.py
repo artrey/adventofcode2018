@@ -1,5 +1,5 @@
 import typing
-from utils.tree.tree import Tree, TreeNode
+from utils.tree import Tree, TreeNode
 
 
 def parse_node(data: typing.List[int], start_idx: int) -> typing.Tuple[int, TreeNode]:
