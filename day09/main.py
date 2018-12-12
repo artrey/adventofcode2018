@@ -1,6 +1,6 @@
 import re
 import typing
-from utils.linked_list.rounded_linked_list import DListNode, RoundedLinkedList
+from utils.linked_list import DListNode, RoundedLinkedList
 
 
 class Player:

@@ -1,9 +1,8 @@
 import typing
-from typing import Iterator
 
-from .double_link_node import DListNode
-from .base_linked_list import BaseLinkedList
-from .list_iterator import ListIterator
+from ..double_link_node import DListNode
+from ..base_linked_list import BaseLinkedList
+from ..iterators import ListIterator
 
 
 class LinkedList(BaseLinkedList):
@@ -18,7 +17,7 @@ class LinkedList(BaseLinkedList):
         """
         return f'[{", ".join(str(val) for val in self)}]'
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> typing.Iterator:
         return ListIterator(self)
 
     @property

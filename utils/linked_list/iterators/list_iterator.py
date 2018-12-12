@@ -1,8 +1,8 @@
 import collections.abc
 import typing
 
-from .double_link_node import DListNode
-from .base_linked_list import BaseLinkedList
+from ..double_link_node import DListNode
+from ..base_linked_list import BaseLinkedList
 
 
 class ListIterator(collections.abc.Iterator):

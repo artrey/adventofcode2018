@@ -1,6 +1,6 @@
 import re
 import typing
-from utils.linked_list.linked_list import LinkedList
+from utils.linked_list import LinkedList
 
 
 def extract_data() -> typing.List[typing.Tuple[str, str]]:

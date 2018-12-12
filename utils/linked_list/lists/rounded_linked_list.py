@@ -1,9 +1,8 @@
 import typing
-from typing import Iterator
 
-from .double_link_node import DListNode
-from .base_linked_list import BaseLinkedList
-from .rounded_list_iterator import RoundedListIterator
+from ..double_link_node import DListNode
+from ..base_linked_list import BaseLinkedList
+from ..iterators import RoundedListIterator
 
 
 class RoundedLinkedList(BaseLinkedList):
@@ -14,7 +13,7 @@ class RoundedLinkedList(BaseLinkedList):
         """
         return f'[{", ".join(str(val) for val in self)}]'
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> typing.Iterator:
         return RoundedListIterator(self)
 
     def set_single_head(self, node: DListNode) -> DListNode:

@@ -1,6 +1,6 @@
 import typing
 
-from .base_linked_list import BaseLinkedList
+from ..base_linked_list import BaseLinkedList
 from .list_iterator import ListIterator
 
 
