@@ -1,51 +1,25 @@
 import typing
+from utils.geometry import Point, Bbox
 
 
-class Point:
-    def __init__(self, x: int, y: int) -> None:
-        self.x = x
-        self.y = y
-
+class ManhattanPoint(Point):
     def manhattan_length(self, x: int, y: int) -> int:
         return abs(self.x - x) + abs(self.y - y)
 
-    def __repr__(self) -> str:
-        return f'({self.x}, {self.y})'
 
-
-class Bbox:
-    def __init__(self):
-        self.lt: typing.Optional[Point] = None
-        self.rb: typing.Optional[Point] = None
-
-    def extend(self, point: Point) -> None:
-        if self.lt is None:
-            self.lt = Point(point.x, point.y)
-        if self.rb is None:
-            self.rb = Point(point.x, point.y)
-
-        self.lt.x = min(self.lt.x, point.x)
-        self.lt.y = min(self.lt.y, point.y)
-        self.rb.x = max(self.rb.x, point.x)
-        self.rb.y = max(self.rb.y, point.y)
-
-    def __repr__(self) -> str:
-        return f'[{self.lt}, {self.rb}]'
-
-
-def extract_data() -> typing.List[Point]:
+def extract_data() -> typing.List[ManhattanPoint]:
     with open('input.txt', 'r') as fd:
-        return [Point(*map(int, line.strip().split(', '))) for line in fd]
+        return [ManhattanPoint(*map(int, line.strip().split(', '))) for line in fd]
 
 
-def bounding_box(points: typing.List[Point]) -> Bbox:
+def bounding_box(points: typing.List[ManhattanPoint]) -> Bbox:
     bbox = Bbox()
     for point in points:
         bbox.extend(point)
     return bbox
 
 
-def find_closest_point(points: typing.List[Point], x: int, y: int) -> typing.Optional[Point]:
+def find_closest_point(points: typing.List[ManhattanPoint], x: int, y: int) -> typing.Optional[ManhattanPoint]:
     distances = {point: point.manhattan_length(x, y) for point in points}
     m = min(distances.items(), key=lambda x: x[1])
     distances.pop(m[0])
@@ -54,11 +28,11 @@ def find_closest_point(points: typing.List[Point], x: int, y: int) -> typing.Opt
     return None
 
 
-def manhattan_sum(points: typing.List[Point], x: int, y: int) -> int:
+def manhattan_sum(points: typing.List[ManhattanPoint], x: int, y: int) -> int:
     return sum(point.manhattan_length(x, y) for point in points)
 
 
-def largest_area(data: typing.List[Point]) -> int:
+def largest_area(data: typing.List[ManhattanPoint]) -> int:
     bbox = bounding_box(data)
     areas = {}
 
@@ -88,7 +62,7 @@ def largest_area(data: typing.List[Point]) -> int:
     return max(areas.values())
 
 
-def specify_manhattan(data: typing.List[Point]) -> int:
+def specify_manhattan(data: typing.List[ManhattanPoint]) -> int:
     bbox = bounding_box(data)
 
     ret = 0
