@@ -18,5 +18,17 @@ class Bbox:
         self.rb.x = max(self.rb.x, point.x)
         self.rb.y = max(self.rb.y, point.y)
 
+    @property
+    def width(self):
+        return self.rb.x - self.lt.x + 1
+
+    @property
+    def height(self):
+        return self.rb.y - self.lt.y + 1
+
+    @property
+    def square(self):
+        return self.width * self.height
+
     def __repr__(self) -> str:
         return f'[{self.lt}, {self.rb}]'
