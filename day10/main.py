@@ -32,21 +32,37 @@ def extract_data() -> typing.List[Star]:
         return ret
 
 
-def print_sky(bbox: Bbox, sky_map: typing.Dict[int, typing.Dict[int, bool]]) -> None:
+def print_sky(bbox: Bbox, stars: typing.List[Star]) -> None:
     sky = [['.' for _ in range(bbox.lt.x, bbox.rb.x + 1)] for _ in range(bbox.lt.y, bbox.rb.y + 1)]
+
+    for star in stars:
+        x, y = star.position.x, star.position.y
+        sky[y - bbox.lt.y][x - bbox.lt.x] = '#'
+
     for line in sky:
         print(''.join(line))
 
 
 def watch_message(data: typing.List[Star]) -> None:
     try:
+        time = 0
         while True:
             bbox = Bbox()
             for star in data:
                 bbox.extend(star.position)
-            print_sky(bbox, {})
-            if input('type "exit" to exit') == 'exit':
-                break
+
+            print(f'Time = {time}')
+            if bbox.square < 1000:
+                print_sky(bbox, data)
+
+                if input('type "exit" to exit\n') == 'exit':
+                    break
+            else:
+                print(f'Too large sky {bbox}, skipping...')
+
+            for star in data:
+                star.do_step()
+            time += 1
     except KeyboardInterrupt:
         pass
 
