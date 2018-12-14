@@ -20,6 +20,11 @@ class LinkedList(BaseLinkedList):
     def __iter__(self) -> typing.Iterator:
         return ListIterator(self)
 
+    @BaseLinkedList.head.setter
+    def head(self, node: DListNode) -> None:
+        self._head = node
+        self._head.prev = None
+
     @property
     def tail(self) -> DListNode:
         return self._tail
