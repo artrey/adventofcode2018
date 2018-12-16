@@ -18,7 +18,9 @@ class SquareGrid:
     def passable(self, point: Point) -> bool:
         return point not in self.obstructions
 
-    def neighbors(self, point: Point) -> typing.List[Point]:
+    def neighbor_order(self, point: Point) -> typing.List[Point]:
         x, y = point
-        ret = [(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]
-        return [p for p in ret if self.in_bounds(p) and self.passable(p)]
+        return [(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]
+
+    def neighbors(self, point: Point) -> typing.List[Point]:
+        return [p for p in self.neighbor_order(point) if self.in_bounds(p) and self.passable(p)]
