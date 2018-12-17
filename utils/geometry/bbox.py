@@ -7,7 +7,10 @@ class Bbox:
         self.lt: typing.Optional[Point] = None
         self.rb: typing.Optional[Point] = None
 
-    def extend(self, point: Point) -> None:
+    def extend(self, point: typing.Union[Point, typing.Tuple[int, int]]) -> None:
+        if not isinstance(point, Point):
+            point = Point(point[0], point[1])
+
         if self.lt is None:
             self.lt = Point(point.x, point.y)
         if self.rb is None:
@@ -19,15 +22,15 @@ class Bbox:
         self.rb.y = max(self.rb.y, point.y)
 
     @property
-    def width(self):
+    def width(self) -> int:
         return self.rb.x - self.lt.x + 1
 
     @property
-    def height(self):
+    def height(self) -> int:
         return self.rb.y - self.lt.y + 1
 
     @property
-    def square(self):
+    def square(self) -> int:
         return self.width * self.height
 
     def __repr__(self) -> str:
