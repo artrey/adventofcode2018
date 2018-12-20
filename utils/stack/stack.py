@@ -8,5 +8,8 @@ class Stack(list):
     def get(self) -> typing.Any:
         return self.pop()
 
+    def look(self) -> typing.Any:
+        return self[-1]
+
     def empty(self) -> bool:
         return not self
