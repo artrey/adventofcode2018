@@ -1,59 +1,54 @@
+from collections import defaultdict
 import typing
-from utils.graph import Graph, GraphNode
-from utils.stack import Stack
 
 
-Point = typing.Tuple[int, int]
+def extract_data() -> typing.Dict[typing.Tuple[int, int], int]:
+    with open('input.txt') as fd:
+        regex = fd.readline().rstrip()
+
+    letter_to_move = {
+        'N': (0, -1),
+        'E': (1, 0),
+        'S': (0, 1),
+        'W': (-1, 0)
+    }
+
+    positions = []
+    x, y = 5000, 5000
+    came_from = defaultdict(set)
+    prev_x, prev_y = x, y
+    distances = defaultdict(int)
+    for c in regex[1:-1]:
+        if c == "(":
+            positions.append((x, y))
+        elif c == ")":
+            x, y = positions.pop()
+        elif c == "|":
+            x, y = positions[-1]
+        else:
+            dx, dy = letter_to_move[c]
+            x += dx
+            y += dy
+            came_from[(x, y)].add((prev_x, prev_y))
+            if distances[(x, y)] != 0:
+                distances[(x, y)] = min(distances[(x, y)], distances[(prev_x, prev_y)] + 1)
+            else:
+                distances[(x, y)] = distances[(prev_x, prev_y)] + 1
+
+        prev_x, prev_y = x, y
+
+    return distances
 
 
-def extract_data() -> Graph:
-    with open('input.txt', 'r') as fd:
-        regex = fd.readline()
-
-    stack_left = Stack()
-    stacks_right: typing.Dict[GraphNode, typing.List[GraphNode]] = {}
-    connected_nodes: typing.Set[GraphNode] = set()
-
-    graph = Graph()
-    fake_node = GraphNode()
-    prev_node = fake_node
-    graph.edges[prev_node] = []
-
-    count = len(regex)
-    idx = 0
-
-    while idx < count:
-        c = regex[idx]
-        if c == '(':
-            stack_left.put(prev_node)
-            stacks_right[prev_node] = []
-        elif c == ')':
-            some_node = stack_left.get()
-            for n in stacks_right.pop(some_node):
-                connected_nodes.add(n)
-            connected_nodes.add(prev_node)
-            prev_node = some_node
-        elif c == '|':
-            stacks_right[stack_left.look()].append(prev_node)
-            prev_node = stack_left.look()
-        elif c in 'NWSE':
-            node = GraphNode(c)
-            graph.edges[node] = [prev_node]
-            graph.edges[prev_node].append(node)
-            prev_node = node
-        idx += 1
-
-    for node in graph.edges[fake_node]:
-        graph.edges[node].remove(fake_node)
-    graph.edges.pop(fake_node)
-    return graph
+def furthest_room(distances: typing.Dict[typing.Tuple[int, int], int]) -> int:
+    return max(distances.values())
 
 
-def furthest_room(graph: Graph) -> int:
-    print(graph.edges)
-    return 0
+def furthest_room_more_than_10000(distances: typing.Dict[typing.Tuple[int, int], int]) -> int:
+    return len(list(filter(lambda x: distances[x] >= 1000, distances)))
 
 
 if __name__ == '__main__':
     data = extract_data()
     print(furthest_room(data))
+    print(furthest_room_more_than_10000(data))
