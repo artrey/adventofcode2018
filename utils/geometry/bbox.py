@@ -21,6 +21,25 @@ class Bbox:
         self.rb.x = max(self.rb.x, point.x)
         self.rb.y = max(self.rb.y, point.y)
 
+    def intersect(self, other: 'Bbox') -> 'Bbox':
+        high = self
+        low = other
+
+        if high.lt.y > other.lt.y:
+            high, low = low, high
+
+        ret = Bbox()
+
+        if high.rb.y >= low.lt.y:
+            if high.rb.x >= low.lt.x or high.lt.x <= low.rb.x:
+                ret.extend((0, 0))
+                ret.lt.x = max(high.lt.x, low.lt.x)
+                ret.lt.y = max(high.lt.y, low.lt.y)
+                ret.rb.x = min(high.rb.x, low.rb.x)
+                ret.rb.y = min(high.rb.y, low.rb.y)
+
+        return ret
+
     @property
     def width(self) -> int:
         return self.rb.x - self.lt.x + 1
